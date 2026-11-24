@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm,top=24mm,bottom=25mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,hyperref,xcolor}
+\definecolor{linkink}{RGB}{20,69,91}
+\hypersetup{hidelinks,colorlinks=true,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
+pdftitle={A shorter superpermutation on fourteen symbols},pdfauthor={Jaehun Jung},
+pdfsubject={An explicit construction and independently verified upper bound}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{1.3em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\proofstart}{\par\noindent\textit{Proof.}\quad}
+\newcommand{\proofend}{\unskip\nobreak\hfill\(\square\)\par}
+\newcommand{\cid}[1]{\texttt{#1}}
+\newcommand{\len}{\lvert}
+\title{A shorter superpermutation on fourteen symbols}
+\author{Jaehun Jung\\[2pt]\small Independent Researcher, Republic of Korea}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a word of length \(93\,904\,707\,285\) containing every permutation of fourteen symbols as a contiguous factor. We cut Jakub Halfar's word W-0165 at 551 pairs of consecutive permutation windows and reorder the resulting 552 pieces. The sum of their endpoint overlaps increases from 707 to 1,334, saving 627 letters. A Lean theorem certifies the reordering for the specified endpoints. A separate scan of the encoded result accounts for all \(87\,178\,291\,200\) permutations, including 154 rotations whose classes lack a complete consecutive run. The construction and both verification procedures accompany the paper.
+\end{abstract}
+
+\section{The construction and its bound}
+Let \(S(n)\) denote the minimum length of a finite word that contains every permutation of an \(n\)-letter alphabet as a contiguous factor. Throughout, a \emph{permutation window} is an interval of \(n\) successive positions whose letters are all distinct.
+
+\begin{theorem}\label{main}
+On the alphabet \(\{0,1,\ldots,9,\mathrm A,\mathrm B,\mathrm C,\mathrm D\}\) there exists a superpermutation of length \(93\,904\,707\,285\).
+\end{theorem}
+
+The input to the construction is Jakub Halfar's W-0165, of length \(93\,904\,707\,912\). The Superpermutation Almanac received it on 24 November 2026 at 19:14:45 UTC. It shortened Jay Pantone's W-0154 by 748 letters \cite{halfar,pantone}. We apply the construction below to Halfar's word and gain 627 more letters. The previously certified lower bound \(93\,891\,141\,157\) \cite{bound} and Theorem~\ref{main} give
+\[
+93\,891\,141\,157 \ \leq\ S(14)\ \leq\ 93\,904\,707\,285 .
+\]
+The interval has width \(13\,566\,128\). The value of \(S(14)\) within that interval remains open.
+
+Houston used directed suffix--prefix overlaps to search routes through six-symbol permutations \cite{houston}. At fourteen symbols the set of required windows already has \(14!\) elements. Here the route vertices are pieces of a known covering word. This reduces the size of the search, provided the cuts preserve the coverage already achieved inside the pieces.
+
+\section{Cuts that preserve every required window}
+For a word \(X\) of length \(N\), write \(X[a,b)\) for its substring in zero-based half-open coordinates. Fix a window width \(n\). Choose pairs of starts \((p_i,q_i)\), \(1\leq i\leq k\), satisfying
+\[
+0\le p_1<q_1\le p_2<q_2\le\cdots\le p_k<q_k\le N-n .
+\]
+Both starts in each pair must be permutation starts, and every start strictly between them must fail that test. In this construction the distances \(d_i=q_i-p_i\) also satisfy \(1\leq d_i\leq n\). Set \(q_0=0\) and \(p_{k+1}=N-n\). The pieces in source order are
+\[
+ C_j=X[q_j,p_{j+1}+n),\qquad 0\leq j\leq k .
+\]
+The two pieces incident on cut \(i\) share precisely the source interval \(X[q_i,p_i+n)\), of length \(n-d_i\).
+
+\begin{lemma}\label{lem:pieces}
+Every permutation window of \(X\) belongs wholly to some \(C_j\). Arrange the pieces in any order, choose a suffix--prefix agreement at each new join, and write that agreement once. The assembled word contains every permutation occurring in \(X\).
+\end{lemma}
+\proofstart
+A window with start \(s\) lies in \(C_j\) exactly when \(q_j\le s\le p_{j+1}\). The only starts outside these closed intervals lie strictly between \(p_i\) and \(q_i\) for some \(i\); the cut test excludes them. At a new join, the common suffix supplies the first \(h\) letters of the next piece. Appending the remainder therefore places that piece intact and retains every earlier piece. Inducting on the joins proves the claim.
+\proofend
+
+For a route \(\pi=(\pi_0,\ldots,\pi_k)\) whose certified overlap lengths are \(h_1,\ldots,h_k\), the length is
+\[
+ |Y_\pi|=\sum_{j=0}^{k}|C_j|-\sum_{i=1}^{k}h_i .
+\]
+In particular, when \(\pi\) is the original route and the original overlaps are used, this expression gives \(N\).
+
+\section{Finding and certifying the route}
+For each candidate cut we record the source position, the distance to the next permutation start and the two boundary permutations. Suffix--prefix comparisons of the boundary permutations determine the allowed overlaps. For example, with pieces numbered from zero in their source order, the final route joins piece 430 to piece 504. Their respective boundary windows are
+\[
+ \texttt{0D76A13B2594C8}\qquad\text{and}\qquad
+ \texttt{2594C876B3A1D0}.
+\]
+Writing \texttt{2594C8} once saves six letters at this join.
+
+The search starts in the original order. At an accepted step it cuts three links and exchanges the two intervening sequences of pieces, retaining each sequence's internal orientation. Only three linking overlaps change. The first and last pieces stay fixed, and only exchanges with a positive total gain are accepted. Each successive stage makes more cut sites available by lowering the minimum start distance \(d_i\). It retains the preceding route. Table~\ref{search} gives the resulting cumulative gains. Shorter words elsewhere in the search space are entirely compatible with this certificate.
+
+\begin{table}[ht]
+\centering
+\caption{Search stages on W-0165. Savings are relative to the unmodified source.}
+\label{search}\smallskip
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Minimum start distance & 12 & 11 & 10 & 9 & 8\\
+Eligible sites & 995 & 2,706 & 4,800 & 8,652 & 12,579\\
+Cumulative saving (letters) & 472 & 567 & 607 & 622 & 627\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The final certificate coalesces consecutive pieces that retain their source adjacency. It specifies \(k=551\) cuts, the order of the 552 pieces, and their new overlaps. The source has total overlap \(707\) across those cuts; the new ordering has total overlap \(1\,334\). It follows that
+\[
+ |Y_\pi|=93\,904\,707\,912 + 707 - 1\,334
+        =93\,904\,707\,285 .
+\]
+Lemma~\ref{lem:pieces} transfers W-0165's coverage to \(Y_\pi\), proving Theorem~\ref{main}. The direct coverage audit below gives a second verification of the same theorem using the output file.
+
+\section{Two checks of the delivered word}
+\paragraph{Route certificate.}
+The Lean declaration \texttt{upper\_from\_W0165} instantiates a general preservation lemma with the finite endpoint descriptors and routes in the supplement. Lean checks the two routes, the source seams, the permutation of piece indices and the exact overlap difference. The theorem assumes pieces matching the descriptors, source coverage, and the stated source length. The patch checker independently decodes the source, verifies both endpoint windows at each cut and tests all intervening starts. It checks all new suffix--prefix equalities and hashes the output assembled directly from source slices. A separate sequential decode of the distributed word gives the same length and SHA-256. The Lean kernel replay used version 4.35.0.
+
+\paragraph{Direct coverage.}
+A rotation class consists of the 14 cyclic rotations of one permutation. Normalizing a permutation to start at \(\mathrm D\) and taking the Lehmer rank of the remaining 13 symbols indexes these classes by the integers from \(0\) to \(13!-1\). When two valid windows start one position apart, their 13 shared letters force the outgoing symbol to be the incoming one. Fourteen successive valid starts therefore realize an entire rotation class.
+
+A first pass records \(6\,227\,020\,789\) distinct classes containing such a run. A second pass examines the remaining eleven classes. For each hit it records the first symbol. In a fixed class this symbol distinguishes all fourteen rotations. The decoder verifies the saved offset, window, rank and first symbol for all 154 hits. For example, the offset \(11\,815\,196\,853\) contains \texttt{0BA35D14C79862}, the rotation beginning with 0 of class \(637\,124\,542\). The accompanying witness table gives all 154 offsets. Consequently the total number of covered permutations is
+\[
+ 14\bigl(6\,227\,020\,789+11\bigr)=87\,178\,291\,200=14! .
+\]
+The scan exploits the deterministic default transitions of the Detour format \cite{format}. At a default step of weight \(d\) the first \(d\) symbols return in reverse order. At intermediate offsets \(1,\ldots,d-1\) the original first symbol is absent. Complete default rotation groups are accounted for in the first pass. The second pass scans truncated default groups, every valid intermediate window of an explicit detour and the initial permutation. As a separate implementation check, the rotation masks of all 16,618 classes observed in the first 250,597 letters agree with a literal sliding-window scan.
+
+\clearpage
+\section{Data and reproducibility}
+The supplement distributes the compressed source and target words, \texttt{patch627.tsv}, the Lean files, both coverage passes, the 154 offsets and verification logs. From the supplement root execute
+\begin{verbatim}
+python3 verify.py
+python3 coverage/verify.py W-0165-minus-627.detour
+(cd formal && lake build)
+\end{verbatim}
+The SHA-256 of the decoded target word is printed below as two consecutive 32-digit blocks.
+\begin{center}\small\ttfamily
+e7d43a592f841e057fa10aa005c87cae\\[-1pt]
+a7026aeea91ff4313be644731a1f876b
+\end{center}
+
+\paragraph{Attribution and author contributions.}
+Jakub Halfar constructed W-0165. This adaptation changes the order and overlaps of its pieces. Both words use Creative Commons Attribution 4.0 International \cite{license}. Jaehun Jung directed the research and its use of reordering methods developed during earlier work on seven symbols. OpenAI Codex implemented the search, generated the construction, wrote the verification code and Lean proof, ran the checks, and drafted the manuscript.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{houston} R. Houston, \emph{Tackling the Minimal Superpermutation Problem}, 2014. \href{https://arxiv.org/abs/1408.5108}{arXiv:1408.5108}.
+\bibitem{halfar} J. Halfar, \emph{W-0165}, Superpermutation Almanac, 24 November 2026. \url{https://superpermutations.com/w/W-0165}
+\bibitem{pantone} J. Pantone, \emph{W-0154}, Superpermutation Almanac, 2026. \url{https://superpermutations.com/w/W-0154}
+\bibitem{bound} J. Jung, \emph{Fourteen-symbol lower bound, record 52}, Superpermutation Almanac, 2026. \url{https://superpermutations.com/b/52}
+\bibitem{format} Superpermutation Almanac, \emph{Detour file format}. \url{https://superpermutations.com/docs/format}
+\bibitem{license} Creative Commons, \emph{Attribution 4.0 International}. \url{https://creativecommons.org/licenses/by/4.0/}
+\end{thebibliography}
+\end{document}

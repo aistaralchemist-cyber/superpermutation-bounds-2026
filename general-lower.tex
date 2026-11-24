@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue,pdfauthor={Jaehun Jung},pdftitle={Interior alternating chains and lower bounds for superpermutations}]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\setlength{\emergencystretch}{2em}
+\title{\bfseries Interior alternating chains and lower bounds\\for superpermutations}
+\author{Jaehun Jung\\{\small Independent Researcher, Republic of Korea}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $S(n)$ be the minimum length of a word containing every permutation of an
+$n$-letter alphabet as a contiguous substring.
+In Pantone's chain-packing bound the return of a pair of alternating chains
+controls a linear allowance for their total lengths. We show that the
+separator following an interior sequence reduces the permitted length of an
+alternating run from $2r$ to $2r-1$ when both orders of the completed pair
+are excluded at $r$ repetitions. This gives an explicit bound at least four
+letters above Pantone's general formula for every $n\equiv1\pmod 3$, $n\ge16$.
+Equality of occupied permutation coordinates supplies earlier exclusions at
+$n=10,13,16$. With these exclusions the improvements over the general formula
+are respectively $1$, $159$, and $28{,}716$ letters. At every $n\le14$ the existing individual lower bound is at
+least as strong as the new general formula. We give a closed formula for all
+positive $n$ and a second version using a finite collision test. The word-level inequalities are formalized in Lean.
+\end{abstract}
+
+\section{Statement}
+Write $P(n)$ for the baseline general bound. For $n\ge8$ it is Pantone's
+exact-return formula \cite{pantone,record34}, with its published parameters
+and outer integer ceiling. For $1\le n\le7$ we take the values
+$1,3,9,33,153,870,5895$. The first two are immediate. The next two
+follow from Hunter and Raudvere, the next two from Kisic's inequality
+proved by Halfar, and the seventh from Halfar's general bound
+\cite{small,halfar}. These choices make it possible to compare a general
+formula with stronger proofs specific to one alphabet.
+
+For $n\ge8$ define the chain-packing transfer function
+\begin{equation}\label{eq:F}
+ F_n(p,t)=n!+(n-1)!+(n-2)!+n-3+
+ \ceil{\frac{2(n-2)!-2(n-2)-4p/t}{n^2-4n+1-2(n-1)/t}} .
+\end{equation}
+On the residue class $n=3m+1$ with $m\ge3$, set $s=3m$.
+The public return count in \cite{pantone} is
+\[
+ R_0=\begin{cases}
+  2s/7,&7\mid s,\\
+  u(s-u),&7\nmid s,\quad 1\le u<s,\quad 7u\equiv1\pmod s.
+ \end{cases}
+\]
+For any positive $r$ set
+\begin{align}
+ d_r&=2r-1,&
+ p_r&=2m+\tfrac12+\tfrac{1}{2d_r},&
+ t_r&=4m-3-\tfrac1{d_r},&
+ T_m(r)&=F_{3m+1}(p_r,t_r). \label{eq:prices}
+\end{align}
+The return count with three explicit collision certificates is
+\[
+ R_c(m)=
+ \begin{cases}3,&m=3,4,\\7,&m=5,\\R_0,&m\ge6.\end{cases}
+\]
+\begin{theorem}\label{thm:main}
+Every word covering every permutation of its $n$ symbols has length at least
+\begin{equation}\label{eq:main}
+ L(n)=\begin{cases}
+ \max\{P(n),T_m(R_0),T_m(R_c(m))\},& n=3m+1,\ m\ge3,\\
+ P(n),&\text{otherwise}.
+ \end{cases}
+\end{equation}
+For every $m\ge5$, $L(3m+1)\ge P(3m+1)+4$.
+\end{theorem}
+
+The parameters of $P$ outside the improved residue class are those in
+\cite{record34}. The exact arithmetic implementation shipped with the paper
+includes the small-parameter table and the cycle-order formulas for all
+congruence classes. The branch $T_m(R_0)$ already proves the infinite
+strict comparison. The branch $T_m(R_c)$ adds the three geometric
+certificates in Section~\ref{sec:slots}.
+
+\section{Interior alternation}
+We use Pantone's transfer theorem \cite{pantone} in the following form.
+In a block-aligned light segment of the permutation overlap path, let
+$x_1,\ldots,x_q$ be the lengths of a realized list of chains. An admissible
+pair $p,t$ gives \eqref{eq:F} as a word-level lower bound if every such
+nonempty list satisfies
+\begin{equation}\label{eq:allow}
+ 2\sum_{i=1}^q x_i\ \le\ 2p+t(q-1).
+\end{equation}
+The path and its segments here are those extracted from arbitrary covering
+words by the inherited packing theorem. In particular, distinct occupied
+vertices of the extracted simple path cannot encode the same permutation.
+For $n=3m+1$, let $b=2m-1$. A chain has length at most $b$ when $q\ge2$,
+and a single chain has length at most $b+1$. These are the pure-return and
+basic-return estimates of \cite{pantone}.
+
+In the completed-cell encoding a chain of length $a$ contributes
+$C(a)=0^{a-1}1$. The final $1$ is its short separator. In a factor of an
+uncompleted realized list, the separator of its last chain may require the
+following chain. Call $x_2,\ldots,x_{q-1}$ the interior. A binary alternating
+run here is a consecutive list alternating between $b$ and $b-1$.
+\begin{lemma}\label{lem:interior}
+Suppose each of
+$\big(C(b)C(b-1)\big)^r$ and $\big(C(b-1)C(b)\big)^r$
+is excluded in every realized segment. Every interior alternating run has
+length at most $2r-1$.
+\end{lemma}
+\begin{proof}
+An interior run with at least $2r$ chains has a prefix of $2r$ chains
+starting with $b$ or $b-1$. There is a chain after this prefix, even if the
+prefix reaches the end of the interior. Hence the separator of the last
+chain in the prefix occurs in the realization. Reading the $2r$ completed
+chains yields one of the two excluded factors.
+\end{proof}
+
+\begin{lemma}\label{lem:allow}
+A positive cap $d$ on interior alternating runs gives \eqref{eq:allow}
+with $p=b+\frac32+\frac1{2d}$ and $t=2b-1-\frac1d$.
+\end{lemma}
+\begin{proof}
+For $q\ge3$ put $H=\sum_i(b-x_i)$. We recall the two counting inequalities
+used in the transfer, writing $B,O,E$ for the ordinary-bad count, singleton
+count and excess witness count of Pantone's alternating-chain decomposition
+\cite{pantone}. Cutting the interior into binary alternating pieces gives
+\[
+ q-2\le B+O+d(B+3O+E+1).
+\]
+Here $B+O$ bounds the removed positions and $B+3O+E+1$ bounds the number
+of surviving pieces. The four-chain constraint gives the weighted defect
+inequality
+\[
+ 2B+2(b-3)O+E\le 2H-(q-3).
+\]
+Since $1+d\le2d$ and $1+3d\le2d(b-3)$ for $d\ge1$ and $b\ge5$,
+substitution gives $q-2\le d(2H-q+4)$. Using
+$\sum_i x_i=bq-H$ yields \eqref{eq:allow}. When $q=2$ the right side is
+$4b+2$, whereas $2\sum_i x_i\le4b$. When $q=1$ the pure-return estimate
+gives $x_1\le b+1\le p$. The parameter admissibility inequalities of the
+transfer hold for $m\ge3$ and $d=2r-1\ge1$ as verified in
+the declaration \code{GeneralAlt.tight\_admissible}.
+\end{proof}
+
+The return theorem of \cite{pantone} excludes the first orientation at
+$r=R_0$. For the second orientation, the two products of the chain
+permutations are conjugate, so their $R_0$-th powers are both the identity.
+The actual-periodic-pair avoidance lemma therefore excludes the second
+orientation as well. Lemmas~\ref{lem:interior} and~\ref{lem:allow} and the
+transfer give $T_m(R_0)\le S(3m+1)$.
+
+\section{Earlier collisions}\label{sec:slots}
+An occupied slot is specified by $(i,j,k)$, the cell number, row offset
+in the cell, and occupied position in that row, each starting at zero.
+We normalize the entry permutation of the first cell to the identity.
+Later entries are obtained by composing the corresponding inverse cell
+permutations. In each row the occupied positions perform prefix rotations
+in those normalized coordinates. Two triples in different rows with the
+same normalized permutation would therefore realize the same path vertex.
+The common starting labeling is a bijection, so this test applies to every
+possible entry labeling.
+
+Here is an explicit coordinate recipe for reproducing the test. Use
+indices $0,\ldots,s$, and let
+\[
+ g=(0,s,s-2,s-1,2,1,3,\ldots,s-3),\quad
+ h=(0,1,s,2,\ldots,s-1)
+\]
+be permutations in one-line notation. Starting with $\nu$ equal to the
+identity, update $\nu$ to $\nu\circ g$ after a 0-cell and to
+$\nu\circ g\circ h$ after a 1-cell. Before this update the zeroth row has
+template $(3,4,\ldots,s,2,1,0)$. For positive row offset $j$, rotate the
+first $s-1$ symbols of $(1,3,4,\ldots,s-1,2,s,0)$ to the left by $j-1$.
+In the resulting template rotate its first $s$ symbols left by $k$ and apply
+$\nu$ to all symbols. In a 0-cell use $0\le j\le s-3$ and in a 1-cell
+use $j=0,1$. Valid slots are $0\le k<s-2$ for $j=0$, and
+$0\le k<s$ for $j>0$. Restricting the 1-cell to two rows suffices for
+the witnesses below. Table~\ref{tab:witnesses} gives a pair of equal
+occupied permutations for each orientation. The Lean checker compares
+every coordinate of each pair.
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrlll@{}}\toprule
+$n$ & $r$ & Orientation & Earlier slot & Later slot\\\midrule
+10&3&$(b,b-1)$&$(4,0,0)$&$(18,0,1)$\\
+  & &$(b-1,b)$&$(8,0,0)$&$(22,0,1)$\\
+13&3&$(b,b-1)$&$(0,0,8)$&$(32,0,0)$\\
+  & &$(b-1,b)$&$(6,0,8)$&$(38,0,0)$\\
+16&7&$(b,b-1)$&$(0,11,11)$&$(109,2,0)$\\
+  & &$(b-1,b)$&$(8,11,11)$&$(117,2,0)$\\\bottomrule
+\end{tabular}
+\caption{Occupied-slot collision certificates in the two completed pair orders.}
+\label{tab:witnesses}
+\end{table}
+
+These exclusions give $T_m(R_c(m))\le S(3m+1)$ by the two lemmas.
+Together with the baseline this proves the first part of Theorem~\ref{thm:main}.
+There is also a computable variant. For $1\le r\le R_0$, test the two
+completed strings of $r$ pairs for equal occupied permutations in distinct
+rows. Set $R_*$ to the first $r$ with a witness in both strings, or $R_0$
+when no such pair is found. Replacing $R_c$ in \eqref{eq:main} by $R_*$
+again gives a lower bound, by the same proof.
+
+\section{Gain over the general formula}
+Put $F=s!$, $c=s(s-2)-2$, and $R=R_0$. Pantone's original slope is
+$t_0=4m-3-1/(2R)$ and our slope is $t_1=4m-3-1/(2R-1)$.
+In either case $2p+t=8m-2$. Consequently the rational correction before the
+ceiling in \eqref{eq:F} is
+\[
+ Q(t)=\frac{((s-2)t-2)(F-2)-16m}{ct-2s}.
+\]
+Subtracting the two expressions gives
+\[
+ Q(t_1)-Q(t_0)=
+ \frac{4(F-2)-16mc}
+ {(2R)(2R-1)(ct_0-2s)(ct_1-2s)}.
+\]
+For $s\ge15$ the factors in the denominator are positive. Since
+$R\le s^2/4$, $c<s^2$, and $t_i<2s$, their product is less than $s^{10}$.
+Also $F\ge s^4\ge8mc+4$, so the numerator is at least $2F$. Finally
+$15!\ge2\cdot15^{10}$. For $s\ge15$ one has
+$(1+1/s)^{10}\le(5/4)^{10}<16\le s+1$, so induction yields
+$s!\ge2s^{10}$. Thus $Q(t_1)-Q(t_0)>2F/s^{10}\ge4$.
+Taking the respective ceilings proves the second part of Theorem~\ref{thm:main}.
+
+\section{Evaluations and verification}
+Table~\ref{tab:values} compares the closed general formula with its own
+baseline and with individual lower bounds recorded in the Superpermutation
+Almanac on 25 November 2026 \cite{records}. The relative increases over the general baseline are about $2.48\times10^{-7}$ at ten symbols and $2.36\times10^{-8}$ at thirteen symbols. The two early directions at
+thirteen symbols bring the general estimate within 358 letters of the
+individual bound. At fourteen the earlier finite-state certificate raises
+the lower endpoint a further eight letters \cite{fourteen}.
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}rrrr@{}}\toprule
+$n$&Baseline $P(n)$&Closed bound $L(n)$&Individual lower bound\\\midrule
+1&1&1&1\\2&3&3&3\\3&9&9&9\\4&33&33&33\\5&153&153&153\\
+6&870&870&872\\7&5,895&5,895&5,899\\8&46,130&46,130&46,134\\
+9&408,469&408,469&408,470\\10&4,033,374&4,033,375&4,033,379\\
+11&43,917,903&43,917,903&43,917,904\\
+12&522,622,380&522,622,380&522,622,401\\
+13&6,746,626,531&6,746,626,690&6,746,627,048\\
+14&93,891,141,149&93,891,141,149&93,891,141,157\\\bottomrule
+\end{tabular}
+\caption{Direct evaluations through fourteen symbols. At sizes one and two
+the individual values are elementary. Halfar separately reports a
+computer-assisted bound of 5,901 at seven symbols \cite{seven}.}
+\label{tab:values}
+\end{table}
+
+At sixteen symbols the values of $P(16)$ and $L(16)$ are
+$22{,}318{,}554{,}295{,}253$ and $22{,}318{,}554{,}323{,}969$.
+The companion Lean project links its word-level theorem to the Almanac's
+contiguous-substring predicate. The closed formula, its fourteen small
+evaluations, the collision test, and the uniform improvement have separate
+declarations. The numerical table can also be reproduced with rational
+arithmetic in \code{calculation/calculate.py --closed}.
+
+\section*{Parameters of the baseline}
+For $n=8,\ldots,12$ use $P(n)=F_n(p,t)$ with $(p,t)$ successively
+\[
+ (10,46/3),\quad(15,287/12),\quad(521/80,359/40),\quad
+ (21,263/12),\quad(28,195/4).
+\]
+For $n\ge13$ write $n-1=3m+e$ with $e\in\{0,1,2\}$.
+For $e=0$ the parameters follow \eqref{eq:prices} with $d=2R_0$.
+For $e=1$ use
+\[
+ p=m(2m+1),\qquad t=2m^2+2m-2-1/R_1.
+\]
+For $m\bmod6=0,2$ one has $R_1=3m+1$. In the other four classes
+$R_1$ is the least common multiple of the indicated two integers.
+\[
+\begin{array}{c|cccc}
+m\bmod6 &1&3&4&5\\ \hline
+\text{first}&(2m+1)/3&(7m+3)/6&(2m+1)/3&(7m+1)/6\\
+\text{second}&(7m+2)/3&(11m+3)/6&(7m+2)/6&(11m+5)/6
+\end{array}
+\]
+For $e=2$ use $p=(m+1)(2m+1)$ and $t=4m^2+5m-5/2$.
+These are the parameters in \cite{pantone,record34}.
+
+\paragraph{Contributions.}
+Jaehun Jung proposed transferring the seven-symbol structural investigation
+to a general bound and directed the study. OpenAI Codex developed the
+additional arguments, generated the certificates, ran the computations
+and Lean checks, and drafted the manuscript. Pantone's return and transfer
+theorems and the earlier lower bounds are used with attribution.
+
+\begin{thebibliography}{9}
+\bibitem{pantone} J. Pantone, \emph{Chain returns and lower bounds for
+superpermutations}, proof and manuscript, 2026. \href{https://github.com/jaypantone/2026-10-superpermutation-lower-palomar/tree/ad72ab5010e945b5c8768a918281778c834dcc40}{Pinned source and manuscript}.
+\bibitem{record34} Superpermutation Almanac, \emph{Pantone's lower bound},
+\href{https://superpermutations.com/b/34}{bound 34}, 2026.
+\bibitem{small} Z. Hunter and U. Raudvere, \emph{The Hunter--Raudvere bound},
+\href{https://superpermutations.com/b/6}{bound 6}. M. Kisic and J. Halfar,
+\emph{Kisic's bound}, \href{https://superpermutations.com/b/7}{bound 7}, 2026.
+\bibitem{halfar} J. Halfar, \emph{Halfar's general bound},
+\href{https://superpermutations.com/b/9}{bound 9}, 2026.
+\bibitem{records} Superpermutation Almanac, \href{https://superpermutations.com/}{individual records},
+consulted 25 November 2026.
+\bibitem{fourteen} J. Jung, \emph{A finite-state lower bound for superpermutations
+on fourteen symbols}, \href{https://superpermutations.com/b/52}{bound 52}, 2026.
+\bibitem{seven} J. Halfar, \emph{Seven symbols, lower bound 5,901}, 2026.
+\href{https://github.com/jhalfar/superpermutations/tree/8e3c02b5234b49a1422751f86f9e472706082374/proofs/n7_5901}{Proof materials}.
+\end{thebibliography}
+\end{document}
