@@ -1,0 +1,12 @@
+info: lean/Asym22/LogRate.lean:312:0: 'CoefficientTwoPrecision.Asym22.explicit_error_log20' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3787/3790] Built Upper86 (11s)
+warning: Upper86.lean: imports `Mathlib.Analysis.Complex.ExponentialBounds` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+warning: Upper86.lean: imports `Mathlib.Tactic` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
+info: Upper86.lean:158:0: 'Superperm86.all_parameters' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Upper86.lean:184:0: 'Superperm86.coefficient85_obstruction' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Upper86.lean:226:0: 'CoefficientTwoPrecision.Asym22.word_rate86' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Upper86.lean:227:0: 'CoefficientTwoPrecision.Asym22.shortest_rate86' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [3788/3790] Built JungAdapter (1.9s)
+ℹ [3789/3790] Built AlmanacSolution (1.7s)
+info: AlmanacSolution.lean:8:0: 'AlmanacSubmission.explicit_error_log20_86' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (3790 jobs).

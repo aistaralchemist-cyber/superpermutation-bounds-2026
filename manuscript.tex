@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,geometry,xcolor,hyperref}
+\geometry{a4paper,top=24mm,bottom=24mm,left=27mm,right=27mm,headheight=14pt}
+\definecolor{ink}{RGB}{26,68,79}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+  pdftitle={An explicit error coefficient of 86 for superpermutation length},pdfauthor={Jaehun Jung}}
+\urlstyle{same}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newenvironment{proof}{\par\noindent\textit{Proof.}\enspace}{\unskip\nobreak\hfill\ensuremath{\square}\par}
+\newcommand{\epsn}{\eta(n)}
+\newcommand{\dd}{\mathrm d}
+\setlength{\emergencystretch}{2em}
+\pagestyle{myheadings}
+\markright{\small J. Jung\hfill An explicit error coefficient for superpermutation length\hspace{1em}}
+\title{An explicit error coefficient of 86\\for superpermutation length}
+\author{Jaehun Jung\\[4pt]{\small Independent Researcher, Republic of Korea}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(S(n)\) be the length of a shortest word containing every permutation of \(n\) symbols as a contiguous substring. Halfar's explicit estimate of the deviation of \(S(n)\) from \(n!+(n-1)!+(n-2)!+2(n-4)!\) has error coefficient \(214\) at the rate \((n-4)!(\log n)^{1/10}n^{-1/20}\). We reduce the coefficient to \(86\) throughout the same range. Halfar's finite construction admits each integer parameter \(r\ge6\). Choosing the largest admissible integer reduces the comparison to two consecutive parameter thresholds. The first such interval also shows that \(86\) is the least integer coefficient obtainable from the input guarantee \(26/r\) and its stated threshold alone. The proof and an explicit covering-word statement are formalized in Lean~4.
+\end{abstract}
+
+\section{Statement and antecedents}
+A word over an \(n\)-letter alphabet is a \emph{superpermutation} if each ordering of the entire alphabet occurs in a window of \(n\) consecutive letters. Write \(S(n)\) for its minimum length. We use natural logarithms, and put
+\[
+ F(n)=n!+(n-1)!+(n-2)!,\qquad A(n)=F(n)+2(n-4)!,
+ \qquad \eta(n)=\frac{(\log n)^{1/10}}{n^{1/20}}.
+\]
+\begin{theorem}\label{thm:main}
+For every integer \(n\ge N_0=2904\cdot10400^2\cdot6^{20}\cdot4^2\),
+\begin{equation}\label{eq:main}
+       |S(n)-A(n)|\le 86\,(n-4)!\,\eta(n).
+\end{equation}
+There is a superpermutation on \(n\) symbols whose length satisfies the upper inequality in \eqref{eq:main}.
+\end{theorem}
+
+The threshold is about \(1.84\cdot10^{28}\). Pantone developed finite covering-word constructions and explicit asymptotic error bounds around \(A(n)\) \cite{pantone}. Halfar refined that construction and proved \eqref{eq:main} with coefficient \(214\) at the same threshold \cite{halfar}. His published inversion chooses a multiple of six and uses the threshold at twice the selected parameter. The finite covering-word theorem in the same proof allows all integers \(r\ge6\) \cite{formal}. We use this additional freedom. Both the exponent and the threshold in Theorem~\ref{thm:main} are inherited from Halfar's result.
+
+\section{Inverting the finite construction}
+Set
+\[
+ C=2904\cdot10400^2,\qquad
+ \lambda(s)=\lfloor\log_2 s\rfloor+2,\qquad
+ T(s)=C s^{20}\lambda(s)^2\quad(s\ge1).
+\]
+In particular \(T(6)=N_0\). Halfar's finite theorem provides, for any integers \(r\ge6\) and \(n\ge T(r)\), an actual covering word \(w\) with
+\begin{equation}\label{eq:finite}
+       |w|\le F(n)+\left(2+\frac{26}{r}\right)(n-4)! .
+\end{equation}
+This is the construction input. The lower estimate we use from the same development is
+\begin{equation}\label{eq:lower}
+ S(n)\ge A(n)-\frac{2}{n-4}(n-4)!,\qquad
+ \frac{2}{n-4}\le4\eta(n)\qquad(n\ge N_0).
+\end{equation}
+The first inequality is the earlier Fritsch lower estimate in the form used by Halfar. The second is the scalar comparison in his proof \cite{formal}.
+
+\begin{lemma}\label{lem:end}
+For every integer \(r\ge6\), with \(s=r+1\), one has
+\begin{equation}\label{eq:cert}
+                 26^{20}T(s)\le(86r)^{20}\bigl(\log T(s)\bigr)^2 .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For \(r=6\) we have \(T(7)=16C7^{20}\ge2^{98}\).
+Consequently \(\log T(7)\ge98\log 2>67\). The remaining comparison is the integer inequality
+\[
+                 26^{20}\cdot16C7^{20}\le(86\cdot6)^{20}67^2.
+\]
+For \(r\ge7\) write \(\lambda=\lambda(s)\). Then \(s/r\le8/7\), \(s\ge2^{\lambda-2}\), and \(C\lambda^2\ge2^{40}\). These last two estimates give \(T(s)\ge2^{20\lambda}\), hence \(\log T(s)\ge(69/5)\lambda\), using \(\log 2>69/100\). The rational comparison
+\[
+                 26^{20}C(8/7)^{20}\le86^{20}(69/5)^2
+\]
+now yields
+\[
+26^{20}T(s)\le 26^{20}C(8/7)^{20}r^{20}\lambda^2
+    \le(86r)^{20}(69\lambda/5)^2
+    \le(86r)^{20}\bigl(\log T(s)\bigr)^2 .
+\]
+\end{proof}
+
+\paragraph{Proof of Theorem~\ref{thm:main}.}
+Fix \(n\ge T(6)\). Since \(T(s)\) is strictly increasing and unbounded, there is a largest integer \(r\ge6\) with \(T(r)\le n\). Thus \(n<T(r+1)\). The function \(x/(\log x)^2\) is increasing on \(x\ge e^2\), as its derivative equals \((\log x-2)/(\log x)^3\). Since \(T(6)>e^2\), Lemma~\ref{lem:end} gives
+\[
+ \frac{26^{20}n}{(\log n)^2}
+   \le \frac{26^{20}T(r+1)}{\bigl(\log T(r+1)\bigr)^2}
+   \le (86r)^{20}.
+\]
+Taking twentieth roots and rearranging gives \(26/r\le86\eta(n)\). Substitute into \eqref{eq:finite} to obtain the covering word and the upper inequality. Equation~\eqref{eq:lower} gives \(A(n)-S(n)\le4\eta(n)(n-4)!\), which supplies the opposite inequality. \hfill\(\square\)
+
+\section{How small can the parameter estimate be?}
+The endpoint calculation identifies an obstruction to further integer improvement by the same argument. For any \(n\ge T(6)\), define the smallest coefficient warranted by the numerical input in \eqref{eq:finite} at that \(n\) by
+\[
+       B_n=\min_{\substack{r\ge6\\T(r)\le n}}
+         \frac{26}{r}\frac{n^{1/20}}{(\log n)^{1/10}} .
+\]
+The proof of Theorem~\ref{thm:main} gives \(B_n\le86\) uniformly. A single alphabet size gives the complementary inequality for integer constants.
+
+\begin{proposition}\label{prop:85}
+For \(n_*=T(7)-1\), one has \(B_{n_*}>85\). Therefore the least integer \(b\) satisfying \(B_n\le b\) for every \(n\ge N_0\) is \(86\).
+\end{proposition}
+
+\begin{proof}
+Only \(r=6\) is admissible at \(n_*\). Since \(2^{98}\le T(7)<2^{99}\), we have \(0<\log n_*<70\). With \(T(7)=16C7^{20}\), direct integer comparison gives
+\[
+            (85\cdot6)^{20}70^2
+                    <26^{20}(16C7^{20}-1)=26^{20}n_* .
+\]
+Taking roots proves the strict inequality. \end{proof}
+
+Numerically \(B_{n_*}\) is about \(85.8270\). Proposition~\ref{prop:85} concerns the universal numerical guarantee in \eqref{eq:finite}. The assembled words might be shorter than that guarantee, and refinements of the finite construction could change the achievable constant.
+
+\paragraph{Formal verification and attribution.}
+The development \texttt{Upper86.lean} proves the covering-word inequality, the two-sided estimate for the shortest length, and the endpoint obstruction of Proposition~\ref{prop:85}. The numerical comparisons in the proofs are checked with integers or rationals. The adapter translates the result to the Superpermutation Almanac's definitions of a word, its coverage predicate and factorial. The result is stated in \texttt{AlmanacSolution.lean} and depends only on Lean's propositional extensionality, classical choice and quotient soundness. The proof sources and build instructions accompany this manuscript. Jaehun Jung directed the research questions. OpenAI Codex developed the parameter estimates and Lean formalization and drafted the manuscript.
+
+\begin{thebibliography}{9}
+\bibitem[Halfar 2026a]{halfar}
+J. Halfar.
+\emph{Halfar's explicit error bound with exponent \(1/20\)}.
+Superpermutation Almanac, bound 51, 22 November 2026.
+\href{https://superpermutations.com/b/51}{Almanac statement and verification record}.
+
+\bibitem[Halfar 2026b]{formal}
+J. Halfar.
+\emph{Superpermutation bounds in Lean}, file \texttt{Asym22/LogRate.lean},
+revision \texttt{4392df9764a5}, 2026.
+\href{https://github.com/jhalfar/superpermutation-almanac-lean/blob/4392df9764a5be7e5bd4dc15a414defe94077eaf/lean/Asym22/LogRate.lean}{Finite word bound, logarithmic estimate and numerical threshold}.
+
+\bibitem[Pantone 2026]{pantone}
+J. Pantone.
+\emph{Pantone's explicit error bound}.
+Superpermutation Almanac, bound 42, 2026.
+\href{https://superpermutations.com/b/42}{Almanac statement and construction}.
+\end{thebibliography}
+\end{document}
