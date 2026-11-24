@@ -1,0 +1,26 @@
+name = "jung_alternating_chains"
+version = "0.1.0"
+defaultTargets = ["AlmanacSolution"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "56a005855ea17e0b0958f73ec801ae140b0a1679"
+
+[[lean_lib]]
+name = "ChainLibrary"
+srcDir = "source"
+roots = []
+globs = ["JungComparison", "AllSizes", "AllSizesPublished", "AltBound", "Challenge", "CollisionExamples", "CollisionFormula", "CutPayment", "FiniteCertificates", "FinitePrefixReturns", "FrozenStatement", "GeneralLower", "GeneralValues", "Geometry13", "Geometry16", "InteriorCut", "LowerChallenge", "PaidTwo", "PublishedCompare", "RefinedLowerChallenge", "ReturnOneAnchors", "ReturnOneDescent", "ReturnOneMap", "SlotGeometry", "SmallBranch", "SquareCharts", "SquareEntry", "StrictCompare", "TightBound", "TightGeneral", "TightMain", "Hunter.+", "LowerBounds.+", "PreimageChain.+", "Superperm.+", "SuperpermutationLowerBound.+", "alternation.+", "bridge.+", "pairs.+"]
+
+[[lean_lib]]
+name = "AlmanacDefs"
+
+[[lean_lib]]
+name = "AlmanacStatement"
+
+[[lean_lib]]
+name = "AlmanacChallenge"
+
+[[lean_lib]]
+name = "AlmanacSolution"

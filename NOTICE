@@ -1,0 +1,15 @@
+Interior alternating chains and lower bounds for superpermutations
+Author: Jaehun Jung, independent researcher, 2026. AI assistance is described in the manuscript.
+
+The Lean source closure is listed in verification/sources.tsv. "jung" marks files developed
+in this research. SlotGeometry.lean adapts the coordinate method of the author's earlier
+fourteen-symbol work and Pantone's InteriorFullRuns and PeriodicReturns machinery.
+"pantone" denotes files from the public branch of
+https://github.com/jaypantone/2026-10-superpermutation-lower-palomar
+at commit ad72ab5010e945b5c8768a918281778c834dcc40.
+"halfar" denotes files from https://github.com/jhalfar/superpermutation-almanac-lean
+at commit a09f9ef4ebb74ae1297f17c5fad38296695f2959, including the credited contributions
+of Jay Pantone, Zach Hunter, Uku Raudvere, Xiaolong Liu and Jakub Halfar.
+The retained notices and upstream license texts are under licenses/.
+The vendored Lean bodies have not been changed. The inventory records their original paths
+and SHA-256 digests. Lean and Mathlib are separate projects with their own licensing.

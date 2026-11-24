@@ -1,0 +1,53 @@
+Superpermutation bounds in Lean: a lower bound for 7 symbols (a Superpermutation Almanac batch)
+
+This project contains Lean sources from four repositories and new files.
+
+Jakub Halfar, superpermutations
+https://github.com/jhalfar/superpermutations, commit 64ab6a783731744882bc1886124faaf370fa9223
+Apache License 2.0, reproduced in licenses/jhalfar-superpermutations-LICENSE.
+Included: the modules of LowerBounds/ (from the directories proofs/lean/lower, proofs/lean/n7,
+proofs/lean/n7_5900 and proofs/lean/n7_5901), of Superperm/ (from proofs/lean/words) and of K6/ (from
+proofs/lean/small; not imported by this batch), and the generators tools/gen_k6.py, tools/gen_cap.py and tools/gen_tight.py (from proofs/lean/small, unchanged).
+Changed files say at their top what was changed: K6/TightConf.lean (the numbers of parts in the hypotheses of
+one theorem), K6/TabOK.lean (each check over the 720 words evaluated in 8 pieces) and K6/Final872.lean (a
+comment). K6/CapEval.lean and K6/TightAll.lean are written anew by
+tools/gen_te.py. For this batch: LowerBounds/SSearch.lean (a local macro written as a local notation with the
+same expansion) and the trust comments of LowerBounds/PRingNative.lean and PProfNative.lean (comments only).
+LowerBounds/PFinalK16.lean, PK16F0Native.lean, PK16F1Native.lean, PK16Native.lean and PFinalK16Native.lean are
+new.
+
+Zach Hunter and Uku Raudvere, superpermutations-hunter
+https://github.com/urdvr/superpermutations-hunter, commit d45222190031d162feb1f6f3cf5fe2d11fab726d
+Apache License 2.0, reproduced in licenses/hunter-superpermutations-hunter-LICENSE.
+Included: the 75 modules of Hunter/ that the proof imports.
+Hunter/ProofsGreedy.lean and Hunter/ProofsGreedy2.lean were changed for Lean 4.35.0 and the Mathlib commit
+56a005855ea17e0b0958f73ec801ae140b0a1679 (proof steps only); each says at its top what was changed.
+
+Xiaolong Liu, superpermutations-preimage-chain-lower-bounds
+https://github.com/Haruhiyuki/superpermutations-preimage-chain-lower-bounds, commit
+8474c74a15fa59b8ce55bcf6bceaaa23b9a3dca8
+Copyright (c) 2026 Xiaolong Liu.
+Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/,
+reproduced in licenses/liu-superpermutations-preimage-chain-lower-bounds-LICENSE. These files keep that licence;
+they are not relicensed.
+Included: the 75 modules of PreimageChain/ that the proof imports.
+PreimageChain/ChainGraph.lean, PreimageChain/ComponentGeometry.lean and PreimageChain/PortalCoordinates.lean
+were changed for Lean 4.35.0 and the same Mathlib commit (proof steps and one explicit Fintype instance in
+place of a derived one; no statement changed); each says at its top what was changed.
+
+The five port fixes follow the compatibility changes that Jay Pantone recorded for the same files in his
+release "A polynomial error estimate for superpermutation length" (verification/compatibility.patch, Apache
+License 2.0).
+
+Jay Pantone, superperm-upper-43-80
+https://github.com/jaypantone/superperm-upper-43-80, commit c8fb7ffdd69be1375580710ae11b47a295b1f0f6
+Apache License 2.0, reproduced in licenses/pantone-superperm-upper-43-80-LICENSE.
+Included: Challenge.lean, unchanged.
+
+SOURCES.tsv lists every included file with its origin, its path in the original repository and the SHA-256 of
+the original it was copied from.
+
+New files, under the Apache License 2.0 of jhalfar/superpermutations: K6/Frontier.lean, K6/TightCut.lean,
+K6/CapCut.lean, tools/gen_te.py and the files it writes (K6/CapEval.lean, K6/TightAll.lean, K6/CE/*.lean,
+K6/TE/*.lean), AlmanacSolution.lean, LowerLinks.lean, README.md and this NOTICE. AlmanacDefs.lean,
+AlmanacStatement.lean and AlmanacChallenge.lean are the Almanac's files (superpermutations.com), unchanged.
