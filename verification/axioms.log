@@ -1,0 +1,2 @@
+'AlmanacSubmission.alternating_chain_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GeneralAlt.Uniform.closed_values_through_fourteen' depends on axioms: [propext, Classical.choice, Quot.sound]
