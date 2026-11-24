@@ -17,7 +17,7 @@ The root uses the Almanac Lean 4.35.0 batch format. It declares one general lowe
 ```sh
 lake exe cache get
 lake build AlmanacSolution
-lake env leanchecker -v AlmanacSolution
+lake env leanchecker -v JungComparison AlmanacSolution
 python3 -B calculation/calculate.py --closed
 ```
 
@@ -29,11 +29,11 @@ Core declarations and their roles are given below.
 | [CutPayment](source/CutPayment.lean) | Bound on the sum of chain lengths with an arbitrary positive cap. |
 | [SlotGeometry](source/SlotGeometry.lean) | Coordinate equality of occupied slots in different rows excludes the two-row configuration. |
 | [CollisionExamples](source/CollisionExamples.lean) | Six explicit collision certificates covering both orientations at n = 10, 13, and 16. |
-| [JungComparison](source/JungComparison.lean) | Direct inequality between the closed formula and the published bound after rounding on the infinite residue class. |
+| [JungComparison](source/JungComparison.lean) | Direct inequality between the closed formula and the published bound after rounding on the infinite residue class, plus the word-level submission theorem. |
 | [GeneralLower](source/GeneralLower.lean) | Unconditional closed-form and search-based lower bounds for arbitrary words. |
 | [GeneralValues](source/GeneralValues.lean) | Direct kernel evaluation of the closed formula at n = 1 through 14. |
 
-The three files named AlmanacDefs, AlmanacStatement and AlmanacChallenge are scaffold files. The registry supplies its own versions when it checks a submission. The solution imports AlmanacDefs and the research modules. The research theorem and the equivalence of the covering predicates do not depend on the scaffold challenge.
+The three files named AlmanacDefs, AlmanacStatement and AlmanacChallenge are scaffold files. The registry supplies its own versions when it checks a submission. The solution references the checked theorem in JungComparison, which imports AlmanacDefs and the research modules. The research theorem and the equivalence of the covering predicates do not depend on the scaffold challenge.
 
 ## Attribution and provenance
 

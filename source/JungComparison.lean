@@ -1,3 +1,4 @@
+import AlmanacDefs
 import GeneralValues
 
 namespace GeneralAlt.Uniform
@@ -22,3 +23,25 @@ theorem closed_gain_four (m : ℕ) (hm : 5 ≤ m) :
   exact public_strict m hm
 
 end GeneralAlt.Uniform
+
+namespace JungComparison
+
+/-- Both the unconditional word bound and the numerical gain on the residue class. -/
+def AlternatingChainLower : Prop :=
+    (∀ n (w : Almanac.Word n), Almanac.IsSuperpermutation n w →
+      GeneralAlt.Uniform.closedLower n ≤ w.length) ∧
+    (∀ m : Nat, 5 ≤ m → GeneralAlt.publishedBaseline (3*m+1) + 4 ≤
+      GeneralAlt.Uniform.closedLower (3*m+1))
+
+/-- Word-level form of the piecewise lower bound, with a strict numerical comparison. -/
+theorem checked : AlternatingChainLower := by
+  have cover {n} (w : Almanac.Word n) (hw : Almanac.IsSuperpermutation n w) :
+      SuperpermutationBounds.Covers w := by
+    intro p hl hp
+    obtain ⟨u, v, huv⟩ := hw p hp hl
+    exact ⟨u, v, huv.symm⟩
+  constructor
+  · exact fun n w hw => GeneralAlt.Uniform.closed_word_lower n w (cover w hw)
+  · exact GeneralAlt.Uniform.closed_gain_four
+
+end JungComparison
