@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,left=26mm,right=26mm,top=24mm,bottom=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,xcolor,hyperref}
+\definecolor{ink}{RGB}{24,70,82}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdfauthor={Jaehun Jung},pdftitle={Rigidity of two seven-symbol superpermutation records under fragment retention and orbitwise relabelling}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Sym}{\mathfrak S_7}
+\newcommand{\ind}{\mathbf 1}
+\setlength{\emergencystretch}{2em}
+\pagestyle{myheadings}
+\markright{\small J. Jung\hfill Rigidity of seven-symbol records\hspace{1.2em}}
+\title{Rigidity of two seven-symbol superpermutation records under fragment retention and orbitwise relabelling}
+\author{Jaehun Jung\\[3pt]{\small Independent Researcher, Republic of Korea}}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We determine exact minima for two families built from Teodorescu's seven-symbol superpermutations. The record W-0021 has 786 maximal runs of consecutive permutation windows. Any superpermutation containing at least 785 of the corresponding fragments has length at least 5,905, even when the retained fragments occur in an arbitrary order. For each of two length-5,905 records, we also let an arbitrary subgroup of the symbol permutations act independently on its orbits in the record's permutation order. Only uniform relabellings attain 5,905. The least length among all nonuniform relabellings is 5,906 for each record. Directed cut certificates prove the fragment bound. A routing inequality for signed graphs reduces the equality test for orbitwise relabellings to 410 and 405 assignments, respectively.
+\end{abstract}
+\section{Two restrictions on a shorter word}
+A superpermutation on $A=\{0,1,\dots,6\}$ is a word containing every permutation of $A$ as a contiguous factor. Halfar's computer-assisted lower bound and Teodorescu's constructions put the unrestricted minimum in $[5901,5905]$ \cite{halfar,words,second}. The interval leaves a concrete question. What features would a word of length at most 5,904 have to change?
+
+Write $R_1$ for W-0021 and $R_2$ for Teodorescu's second construction \cite{words,second}. A \emph{fragment} of $R_1$ is the substring covered by a maximal run of consecutive starting positions whose length-seven windows are permutations. Write $P(R)$ for the list of all permutations in order of first occurrence in $R$. The \emph{spelling} of a list of distinct permutations places each successive permutation at its longest compatible suffix--prefix overlap with the previous one.
+\begin{theorem}\label{thm:frag}
+The minimum length of a seven-symbol superpermutation containing at least 785 of the 786 fragments of $R_1$ is 5,905.
+\end{theorem}
+\begin{theorem}\label{thm:orbit}
+Fix $R\in\{R_1,R_2\}$. Choose $H\leq\Sym$ and, for each orbit $U$ of $H$ on the permutations, choose $a_U\in H$. In $P(R)$ replace every $p\in U$ by $a_Up$. The resulting spelling has length 5,905 if all $a_U$ agree and has length at least 5,906 otherwise. For each record some nonuniform choice attains 5,906.
+\end{theorem}
+\newpage
+\section{Retaining all but one fragment}
+For distinct permutations $p,q$, let $d(p,q)$ be the smallest $t\in\{1,\ldots,7\}$ for which the last $7-t$ letters of $p$ match the first $7-t$ letters of $q$. A spelling of a permutation list therefore has length $7+\sum_i d(p_i,p_{i+1})$. This overlap formulation is also used in Hamiltonian formulations of the superpermutation problem \cite{houston}.
+
+The 5,040 valid windows of $R_1$ are distinct. Grouping their starting positions into maximal runs gives the following counts.
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Fragment length &7&8&9&10&11&12&13\\
+Multiplicity &4&29&33&33&29&4&654\\
+\bottomrule
+\end{tabular}
+\end{center}
+A one-window fragment occurs in every superpermutation. If a longer fragment is missing, split that fragment into all of its constituent seven-letter windows. If every fragment is retained, split any longer fragment. In either case all the resulting pieces occur in the word under consideration, and their window sets partition $\Sym$.
+
+Choose an occurrence of each piece and sort the occurrences by their starting positions. A piece cannot contain another, since they would share a permutation window. Their ending positions therefore increase strictly as well. Two pieces cannot overlap in seven or more letters for the same reason. For $m$ pieces and any prescribed order, the shortest spelling of that order has length
+\begin{equation}
+ B+\sum_{i=1}^{m-1}(d_i-2),\qquad
+ B=7+2(m-1)+\sum_{i=1}^m (|C_i|-7),\label{eq:fragment}
+\end{equation}
+where $d_i$ is the distance from the last window of $C_i$ to the first of $C_{i+1}$. Indeed, each successor contributes $d_i+|C_{i+1}|-7$ letters at the maximum overlap. Choosing that overlap consecutively is feasible since the current spelling ends with the entire preceding piece. Equation~\eqref{eq:fragment} consequently lower-bounds the length of the containing word.
+
+Add one dummy vertex to the pieces. Give arcs between pieces cost $c_{uv}=d(u,v)-2$ using their boundary windows, and dummy arcs cost zero. An order of all pieces now corresponds to a Hamiltonian cycle. For each of the 782 openings the supplement provides a scale $s>0$, integer prices $\alpha_u,\beta_v$, and nonnegative weights $\gamma_S$ on nonempty proper vertex sets. The checker verifies the cut inequalities \cite{dfj}
+\begin{equation}
+ \alpha_u+\beta_v+\sum_{S:\,u\in S,\ v\notin S}\gamma_S\leq s c_{uv}
+ \qquad(u\ne v).\label{eq:dual}
+\end{equation}
+Every Hamiltonian cycle enters and leaves each vertex once and exits every priced set at least once. Summing~\eqref{eq:dual} therefore bounds the length below by
+$B+(\sum_u\alpha_u+\sum_v\beta_v+\sum_S\gamma_S)/s$.
+Across the 782 certificates this quantity ranges from $5904.0219$ to $5905$. The common scale is $10{,}000$. Checking 490,447,232 ordered arcs uses only integer arithmetic. Rounding up and using $R_1$ for attainment proves Theorem~\ref{thm:frag}. In particular, a shorter superpermutation would have to omit at least two distinct fragments of length at least eight.
+\newpage
+\section{Independent labels on subgroup orbits}
+The action of $H$ replaces each symbol in $p$ by its image under a permutation from $H$. The orbit of $p$ is $Hp$. Each chosen $a_U$ permutes its own orbit, so the transformed list contains each of the 5,040 permutations exactly once. Even a two-element subgroup permits $2^{2520}$ assignments.
+
+Fix an order on the orbits. For $U<V$ and $h\in H$, collect all consecutive transitions $p\to q$ in $P(R)$ between the two orbits. Define
+\[
+\begin{split}
+G_{UV}(h)={}&\sum_{p\in U,\,q\in V}\bigl(d(p,hq)-d(p,q)\bigr)\\
+ &+\sum_{p\in V,\,q\in U}\bigl(d(p,h^{-1}q)-d(p,q)\bigr),
+\end{split}
+\]
+where both sums run only over the collected transitions. Let $\Delta$ be the change in spelling length. Applying the same symbol permutation to both arguments preserves $d$. Transitions within an orbit contribute zero, so
+\[
+\Delta=\sum_{U<V}G_{UV}(a_U^{-1}a_V)
+\ \geq\!\sum_{U<V:\,a_U\ne a_V}w_{UV},\qquad
+w_{UV}=\min_{h\in H\setminus\{1\}}G_{UV}(h).
+\]
+The trivial subgroup only has a uniform assignment and may be omitted here.
+
+\begin{lemma}\label{lem:route}
+For an integer weighted graph, regard each positive weight as a capacity and each negative weight $-k$ as $k$ units of demand between its endpoints. Suppose each demand unit is assigned a path along positive edges, using no edge more often than its capacity. For any vertex labelling, the sum of the weights of edges with distinct endpoint labels is at least the unused capacity on positive edges with distinct endpoint labels.
+\end{lemma}
+\begin{proof}
+If a demand has different endpoint labels, its path contains at least one edge with different endpoint labels. Each use consumes a distinct capacity unit. Charge one such unit to each separated demand. At least the separated unused capacity remains after subtraction.
+\end{proof}
+
+The verifier generates the orbits and their $G_{UV}$ for every subgroup of $\Sym$. It routes each demand by breadth-first search in the remaining positive capacities. The following counts include every nontrivial subgroup for each word. The residual graph has one edge for each positive pair with unused capacity.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+ & $R_1$ & $R_2$\\
+\midrule
+All nontrivial subgroups &11,299&11,299\\
+Without negative weights &10,769&10,770\\
+With all negative demands routed &530&529\\
+Residual graph has one component &11,265&11,266\\
+Residual graph has two components &26&25\\
+Residual graph has three components &8&8\\
+\bottomrule
+\end{tabular}
+\end{center}
+Lemma~\ref{lem:route} gives $\Delta\geq0$ for every assignment, and equality forces the labelling to be constant on every residual component.
+\newpage
+\section{The equality case and verification}
+Every subgroup with a disconnected residual graph has order six. Multiplying all labels on the left by the same group element preserves every distance, so fix the label of the first component to the identity. With $k$ components this leaves $6^{k-1}-1$ nonuniform assignments to check. The totals are $26\cdot5+8\cdot35=410$ for $R_1$ and $25\cdot5+8\cdot35=405$ for $R_2$. For each, summing the 5,039 transformed distances gives a length strictly greater than 5,905. The uniform assignments reproduce the reference lengths.
+
+To attain 5,906, take the cyclic group generated by $h(i)=i-1\pmod 7$. Apply $h$ to the orbit of $0123456$, consisting of its seven cyclic shifts, and fix every other orbit. The supplement constructs each resulting word and checks its length and all 5,040 permutation factors. This proves the strict bound and its attainment in Theorem~\ref{thm:orbit}.
+
+\paragraph{Exhaustiveness.} Starting from the trivial group, the checker extends a representative $H$ by one generator $x$ at a time. Replacing $x$ by $hx$ for $h\in H$ gives the same extension. Conjugation by the normalizer of $H$ gives a conjugate extension. For each new group it enumerates all conjugates using $(0\,1)$ and $(0\,1\,2\,3\,4\,5\,6)$, which generate $\Sym$. Every subgroup can be reached by adjoining its generators one at a time. This yields 96 conjugacy classes and 11,300 distinct subgroups, including the trivial group. The inequality and equality tests use every distinct subgroup because the reference order is fixed.
+
+\paragraph{Relation to the completion criterion.} An earlier study \cite{jung} relates the unrestricted optimum to the number of rotation classes completed by a shorter word. It also certifies restricted minima for a prescribed residual route and for prescribed exceptional supports. Here the retained pieces may occur in any order in the first family. In the second family the permutation order is changed by independent symbol substitutions on entire subgroup orbits. The two theorems give necessary changes to the records for these operations. The unrestricted optimum remains open.
+
+\paragraph{Reproduction and authorship.} Run \texttt{python3 verification/replay.py} with a C++17 compiler. The archive contains the record words, all fragment prices, and both integer checkers. With \texttt{--lean /path/to/lean}, the same script checks the cut summation lemma and the routing lemma with its residual term in Lean 4.35.0. The numerical instances and the subgroup enumeration are checked by the programs outside Lean. Jaehun Jung directed the research and specified the verification requirements. OpenAI Codex (GPT-6) assisted with the proofs, code, computations, and manuscript.
+
+\begin{thebibliography}{9}\small\setlength{\itemsep}{1pt}
+\bibitem{dfj} G. Dantzig, R. Fulkerson, and S. Johnson, Solution of a large-scale traveling-salesman problem, \emph{Operations Research} 2 (1954), 393--410. \href{https://doi.org/10.1287/opre.2.4.393}{DOI}.
+\bibitem{halfar} J. Halfar, \emph{A superpermutation on seven symbols has at least 5,901 letters}, proof and certificate inventory (2026). \href{https://github.com/jhalfar/superpermutations/tree/8e3c02b5234b49a1422751f86f9e472706082374/proofs/n7_5901}{Revision 8e3c02b}.
+\bibitem{houston} R. Houston, \emph{Tackling the minimal superpermutation problem} (2014). \href{https://arxiv.org/abs/1408.5108}{arXiv:1408.5108}.
+\bibitem{jung} J. Jung, \emph{A rotation-class completion criterion for seven-symbol superpermutations} (2026). \href{https://github.com/aistaralchemist-cyber/superpermutation-completion-7/blob/4a98a9ae38cd6ec82c0ee0622a49419c3d98d453/seven-symbol-completion.pdf}{Preprint}.
+\bibitem{words} A. Teodorescu, \emph{W-0021}, Superpermutation Almanac (2026). \href{https://superpermutations.com/w/W-0021}{Word and attribution}.
+\bibitem{second} A. Teodorescu, \emph{Second length-5,905 construction}, Superpermutators (2026). \href{https://groups.google.com/g/superpermutators/c/D5sKkV2jBuc/m/MYVQA8UsAQAJ}{Author's announcement}.
+\end{thebibliography}
+\end{document}
