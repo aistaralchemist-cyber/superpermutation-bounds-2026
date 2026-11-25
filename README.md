@@ -2,7 +2,7 @@
 
 **Jaehun Jung** · Independent Researcher, Republic of Korea · 25 November 2026
 
-Let S(n) be the minimum length of a word containing all n! permutations of n symbols as consecutive substrings. This collection contains three research preprints covering a general upper bound, a general lower bound and a constructed word.
+Let S(n) be the minimum length of a word containing all n! permutations of n symbols as consecutive substrings. This collection contains six research preprints on bounds, explicit words, local optimality, and rotation-class completion.
 
 ## An explicit error coefficient of 86 for superpermutation length
 
@@ -19,3 +19,15 @@ The inequality improves the previous general formula by at least four letters fo
 ## Authorship and reuse
 
 Jaehun Jung directed the research. OpenAI Codex developed the additional arguments, implemented and ran computations and formalizations, and drafted the manuscripts under his direction. The papers and supplements credit the underlying results and constructions. Halfar's source word and its adaptation carry the Almanac's CC BY 4.0 license. Each verification package includes the applicable source notices. These are author-posted research manuscripts.
+
+## Local optimality of W-0166
+
+For the normalized 17-run factor shared by the 24 most frequent types, a replacement preserving the endpoints and all 238 required permutations has minimum length 268. The supplement includes independent certificate checks. [Paper](w0166-local-optimality.pdf) · [LaTeX](w0166-local-optimality.tex) · [Verification](w0166-local-optimality-supplement.zip)
+
+## Rigidity of two seven-symbol records
+
+Keeping any 785 of the 786 specified W-0021 fragments forces length at least 5,905. Across the two Teodorescu records studied, the minimum for nonuniform orbitwise relabellings is 5,906 for each record. [Paper](seven-record-rigidity.pdf) · [LaTeX](seven-record-rigidity.tex) · [Verification](seven-record-rigidity-supplement.zip)
+
+## A rotation-class completion threshold for superpermutations on any alphabet
+
+For every alphabet size of at least three, an explicit threshold converts a target-length existence question into an equivalent partial-completion problem. The paper works out the threshold for improving the fourteen-symbol record by one letter. [Paper](general-rotation-completion.pdf) · [LaTeX](general-rotation-completion.tex) · [Verification](general-rotation-completion-supplement.zip)
