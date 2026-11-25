@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,top=23mm,bottom=23mm,left=26mm,right=26mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,hyperref,xcolor}
+\definecolor{inklink}{RGB}{24,74,86}
+\hypersetup{colorlinks=true,allcolors=inklink,pdftitle={Local optimality of the fourteen-symbol superpermutation W-0166},pdfauthor={Jaehun Jung},pdfsubject={Anchored shortest common superstrings and checked SAT refutations}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{1.25em}
+\pagestyle{myheadings}
+\markright{\small J. Jung\hfill Local optimality of W-0166\hspace{1em}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\startproof}{\par\noindent\textit{Proof.}\quad}
+\newcommand{\proofdone}{\unskip\nobreak\hfill\(\square\)\par}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{\bfseries Local optimality of the fourteen-symbol\\superpermutation W-0166}
+\author{Jaehun Jung\\[3pt]\small Independent Researcher, Republic of Korea}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The superpermutation W-0166 contains 19,861,787 maximal runs of fifteen consecutive permutation windows. Each such run repeats its first permutation. We ask whether the surrounding letters can be replaced by a shorter word with the same two endpoint permutations and with every original local permutation still present. For neighborhoods of at most nine runs we certify optimality at 19,861,497 centers by integer assignment duality. For seventeen complete runs we find a single 268-letter factor, up to alphabet relabelling, at 19,802,957 centers. Its 238 distinct permutations admit no anchored common superstring of length 267. We give a checked Boolean refutation, independently reconstructing every clause from the local permutations. The twenty-four most frequent qualifying Detour types have separate certificate files and reduce to this same instance. These counts concern individual replacements in the specified neighborhoods.
+\end{abstract}
+
+\section{The local replacement problem}
+A superpermutation contains every permutation of its alphabet as a contiguous factor. An earlier paper constructed W-0166 from W-0165 by reordering 552 pieces and increasing the sum of their overlaps by 627 letters \cite{construction,word}. That paper established existence and coverage at length \(93\,904\,707\,285\). Here the input is the resulting word. A repeated permutation is a natural place to look for a further saving, since deleting one occurrence would preserve that permutation elsewhere. Such a deletion can also destroy other required windows or change a join.
+
+Work over \(\Sigma=\{0,1,\ldots,9,\mathrm A,\mathrm B,\mathrm C,\mathrm D\}\). For a factor \(I\) of length at least 14, let \(P(I)\) be its set of distinct length-14 permutation factors. Suppose \(I\) begins and ends with distinct permutations \(s,t\). An \emph{anchored replacement} is any word beginning with \(s\), ending with \(t\) and containing every member of \(P(I)\). It may contain extra permutations and change all internal overlaps. Write \(\lambda(I)\) for its minimum length. The original \(I\) attains an upper bound. Preserving the two anchors preserves every length-14 window crossing a join with the exterior.
+
+\clearpage
+\section{Neighborhoods in the record}
+A \emph{run} is a maximal sequence of consecutive start positions of permutation windows. Two adjacent windows share thirteen letters, so the new letter equals the departing one. The windows in a run therefore follow successive cyclic rotations. In a run of fifteen windows the fifteenth equals the first. Counts below use the starting position of such a run once, even when neighborhoods of different centers overlap.
+
+We work with the canonical Detour archive of W-0166 distributed with the construction \cite{construction,format}. A token \((g,c)\) gives \(g\) default moves followed by explicit move code \(c\). Select three consecutive move tokens when all three codes belong to \(\{6,10\}\), each \(g<65\,536\), and the middle token has code 10 and \(g\equiv13\pmod {14}\). The ordered triple is its \emph{type}. Decode the triple from the identity permutation and include its initial fourteen letters. The decoder checks that its middle move creates the repeated window of a unique fifteen-window run in that factor. Starting from the actual entry permutation applies the same alphabet bijection to every decoded letter. Each qualifying middle move designates a distinct center.
+
+For radius \(r\), take the center and at most \(r\) runs on either side in the decoded triple. The local word begins at the first selected permutation start and ends at the last selected permutation end. At a triple boundary this convention uses the portion of a run inside the triple. Table~\ref{tab:counts} records the resulting intervals. Its last two rows use only complete runs strictly inside their triples.
+
+\begin{table}[h]\centering
+\caption{Numbers of types and centers in W-0166. The last row includes the preceding row.}\label{tab:counts}
+\smallskip\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Selection & Token types & Centers & Runs per interval\\\midrule
+Radius 4, all selected triples & 1,298 & 19,861,497 & 7--9\\
+Radius 8, most frequent 24 types & 24 & 17,637,033 & 17\\
+Radius 8, same normalized factor & 606 & 19,802,957 & 17\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{theorem}\label{thm:local}
+Every interval in Table~\ref{tab:counts} satisfies \(\lambda(I)=|I|\). In the last two rows the common length is 268.
+\end{theorem}
+
+The radius-four result covers \(99.99854\%\) of all 19,861,787 fifteen-window runs. There are exactly nine selected runs at 19,856,411 centers, eight at 2,691 centers, and seven at 2,395 centers. Of the 1,298 token types, nine different radius-four words remain after sending the letters of the first permutation to \(0,1,\ldots,\mathrm D\) in order. Exact equality of these normalized words gives the grouping.
+
+The radius-eight census has 33 normalized words. All of the most frequent 24 token types give the same normalized 268 letters. For example the most frequent type \((167,6),(181,10),(139,6)\) occurs 9,864,223 times. Comparing the full normalized strings extends this same factor to 582 additional types. The resulting 606 types cover \(99.70380\%\) of the fifteen-window runs. Section~\ref{sec:check} describes how to reproduce these counts from the canonical file.
+
+\clearpage
+\section{An overlap path with fixed endpoints}\label{sec:path}
+For distinct \(p,q\in P(I)\), let \(d(p,q)\) be fourteen minus the maximum length of a suffix of \(p\) equal to a prefix of \(q\), with the empty overlap allowed. This is the number of letters needed to append \(q\) after \(p\). Houston used directed overlaps to construct superpermutations \cite{houston}. Our vertices are only the distinct permutations required inside one neighborhood.
+
+\begin{lemma}\label{lem:path}
+The minimum anchored replacement length equals fourteen plus the minimum cost of a Hamilton path from \(s\) to \(t\) on \(P(I)\) with costs \(d\).
+\end{lemma}
+\startproof In a replacement choose the initial occurrence of \(s\), the terminal occurrence of \(t\), and one occurrence of each other required permutation. Their starts are distinct. Read them in increasing order. The distance between consecutive starts is at least \(d(p,q)\), because a distance below fourteen gives an actual suffix--prefix overlap. The distances sum to the word length minus fourteen. Conversely, append the vertices of any such path with maximum successive overlaps. The resulting word contains them all and has the prescribed first and last windows. \proofdone
+
+Price each possible tail \(p\ne t\) by \(u_p\) and each head \(q\ne s\) by \(v_q\). If \(u_p+v_q\le d(p,q)\) on all admissible arcs, every Hamilton path costs at least
+\[
+D=\sum_{p\ne t}u_p+\sum_{q\ne s}v_q.
+\]
+This is the dual bound for the assignment relaxation \cite{kuhn}. A matching with that same cost certifies the optimum of the relaxation. For each of the nine radius-four words the supplement supplies a matching and integer prices with \(14+D=|I|\). The checker compares 120,699 arc inequalities across these nine words. Lemma~\ref{lem:path} and the original word give equality for the first row of Table~\ref{tab:counts}.
+
+\begin{table}[h]\centering
+\caption{Radius-four certificates, grouped by length and number of required permutations. Distinct normalized words can share both quantities.}
+\smallskip\small
+\begin{tabular}{@{}rrrrr@{}}\toprule
+Length & Required permutations & Normalized words & Centers & \(D\)\\\midrule
+106 & 85  & 1 & 2,395 & 92\\
+121 & 99  & 1 & 2,691 & 107\\
+136 & 113 & 1 & 2,648 & 122\\
+143 & 121 & 1 & 1 & 129\\
+148 & 126 & 1 & 19,846,028 & 134\\
+149 & 126 & 3 & 7,733 & 135\\
+150 & 126 & 1 & 1 & 136\\\bottomrule
+\end{tabular}
+\end{table}
+
+The most frequent radius-eight factor starts with \code{0123456789ABCD} and ends with \code{84567D9ABC0123} in normalized labels. Its successive run sizes are eight copies of 14, then 15, then eight copies of 14. The 239 permutation occurrences give 238 distinct vertices. The minimum assignment costs 250 shifts. Spelling the original takes 254 shifts, so here the assignment bound alone leaves four letters unresolved.
+
+\clearpage
+\section{Ruling out a 267-letter replacement}\label{sec:refute}
+By Lemma~\ref{lem:path}, a shorter word would give a path of cost at most \(267-14=253\). Every such path uses every priced tail and head once. Writing \(r_{pq}=d(p,q)-u_p-v_q\), the independently checked prices therefore imply
+\[
+r_{pq}\ge0,\qquad \sum_{(p,q)\ {\rm on\ the\ path}}r_{pq}\le253-250=3 .
+\]
+Keep the arcs with \(r_{pq}\le3\) and give each an edge variable. This leaves 3,794 arcs. The formula puts exactly one outgoing arc at every vertex except \(t\) and exactly one incoming arc at every vertex except \(s\). It enforces the reduced-cost budget by listing an edge variable \(r_{pq}\) times and bounding the number of true entries by three. For a feasible path, setting the auxiliary prefix-counter bit \((i,j)\) when the first \(i\) entries contain at least \(j\) true entries satisfies the carry, increment and overflow clauses.
+
+To express enough connectivity, impose two clauses for each of fifteen recorded sets of fourteen internal vertices. One asks for an edge entering the set, the other for an edge leaving it. Every \(s\)-to-\(t\) Hamilton path satisfies both. We obtained the sets as disjoint cycles of a preliminary degree-feasible assignment. The verifier uses only their membership and the independently reconstructed arcs. Such subtour exclusions are classical \cite{dfj}. We need only the implication from a shorter word to satisfaction of this finite clause set. A complete encoding of connectivity is unnecessary once these clauses yield a contradiction.
+
+\begin{table}[h]\centering
+\caption{One radius-eight instance after first-occurrence numbering. Each of the 24 cases was generated and checked separately.}
+\smallskip\small
+\begin{tabular}{@{}lr@{\qquad}lr@{}}\toprule
+Required vertices & 238 & CNF variables & 19,646\\
+Retained arcs & 3,794 & CNF clauses & 263,040\\
+Internal vertex sets & 15 & LRAT additions & 13,976\\\bottomrule
+\end{tabular}
+\end{table}
+
+CaDiCaL produced a textual LRAT refutation \cite{lrat,cadical}. For each added clause in these traces, assuming the negation of that clause forces a contradiction by unit propagation using the indicated earlier clauses. The last addition is the empty clause. Both \code{lrat-check} and \code{lrat-trim} accepted all 24 archived proofs. Both rejected a control trace with the final empty clause removed. A third checker replays the positive hints directly. A separate program scans the literal source windows, verifies the dual inequalities and cut sets, and reconstructs every input clause before it checks the refutation.
+
+The 24 DIMACS files coincide byte for byte, as do their proof files. Numbering vertices by first occurrence makes the common structure visible. The refuted formula excludes a cost of 253 or less, while the 268-letter source attains cost 254. Relabelling that same literal factor proves the result at all 19,802,957 reported centers. This proves the last two rows of Theorem~\ref{thm:local}.
+
+\clearpage
+\section{Verification and scope}\label{sec:check}
+The supplement includes the canonical compressed record, the motif census, nine assignment certificates, and 24 case descriptions with their CNFs and LRAT proofs. From its root run
+\begin{center}\code{python3 verify.py}\end{center}
+Verification uses Python 3 and C and C++ compilers. It runs offline. Separate instructions are supplied for producing new traces with CaDiCaL 2.1.2. All numeric conclusions in Theorem~\ref{thm:local} can be checked without running a SAT solver.
+
+The input scanner checks the compressed and token-stream hashes, the initial permutation, the unique start code, and the absence of literal resets. It counts 139,079,970 explicit moves. An independent tally using the valid-window patterns of moves accounts for \(87\,198\,152\,990\) permutation windows and the denominator of 19,861,787 maximal fifteen-window runs. Local types are decoded as literal strings. A direct scan identifies the central repeated permutation and both endpoints of each selected interval. The type inventory, normalized strings, multiplicities and member lists are distributed in tabular form. The 24 case descriptions reconstructed from the corpus are checked against the solver inputs.
+
+For fixed-end editing, the result excludes moving a repetition elsewhere \emph{within} a listed factor if every required local permutation must remain there. A global edit may cover a locally unique permutation somewhere outside that factor, change an endpoint, or couple distant cuts. The theorem permits those possibilities. It supplies neither an exact global minimum length nor an improvement to the numerical bounds for fourteen symbols.
+
+\paragraph{Attribution.} Jakub Halfar constructed W-0165. W-0166 was derived from it by the cited reordering and is supplied under CC BY 4.0 with attribution. Jaehun Jung set the research question, directed the verification and requested independently checkable certificates. OpenAI Codex developed the computational arguments, implemented and ran the checks, and drafted the manuscript under his direction.
+
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{construction} J. Jung, \emph{A shorter superpermutation on fourteen symbols}, research preprint, 2026. \href{https://github.com/aistaralchemist-cyber/superpermutation-bounds-2026/blob/cd6a1bd4609e5ee4fbff74eac99bfd58fe63c6aa/fourteen-symbol-word.pdf}{Paper and pinned construction}.
+\bibitem{word} Superpermutation Almanac, \href{https://superpermutations.com/w/W-0166}{W-0166, J. Jung} and \href{https://superpermutations.com/w/W-0165}{W-0165, J. Halfar}, 2026.
+\bibitem{format} Superpermutation Almanac, \href{https://superpermutations.com/docs/format}{Detour file format}.
+\bibitem{houston} R. Houston, \emph{Tackling the Minimal Superpermutation Problem}, 2014. \href{https://arxiv.org/abs/1408.5108}{arXiv:1408.5108}.
+\bibitem{kuhn} H. W. Kuhn, The Hungarian method for the assignment problem, \emph{Naval Research Logistics Quarterly} \textbf{2} (1955), 83--97. \href{https://doi.org/10.1002/nav.3800020109}{doi:10.1002/nav.3800020109}.
+\bibitem{dfj} G. Dantzig, R. Fulkerson and S. Johnson, Solution of a large-scale traveling-salesman problem, \emph{Operations Research} \textbf{2} (1954), 393--410. \href{https://doi.org/10.1287/opre.2.4.393}{doi:10.1287/opre.2.4.393}.
+\bibitem{lrat} L. Cruz-Filipe, M. Heule, W. Hunt, M. Kaufmann and P. Schneider-Kamp, \emph{Efficient Certified RAT Verification}. \href{https://arxiv.org/abs/1612.02353}{arXiv:1612.02353}.
+\bibitem{cadical} A. Biere and contributors, \emph{CaDiCaL}. \href{https://github.com/arminbiere/cadical/tree/rel-2.1.2}{Release 2.1.2}.
+\end{thebibliography}
+\end{document}
