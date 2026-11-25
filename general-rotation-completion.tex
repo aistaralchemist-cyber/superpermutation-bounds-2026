@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype}
+\setlength{\textfloatsep}{9pt plus 1pt minus 1pt}
+\setlength{\intextsep}{9pt plus 1pt minus 1pt}
+\usepackage[letterpaper,left=0.93in,right=0.93in,top=0.80in,bottom=0.83in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={A rotation-class completion threshold for superpermutations on any alphabet},pdfauthor={Jaehun Jung}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\title{A rotation-class completion threshold for\\superpermutations on any alphabet}
+\author{Jaehun Jung\\[3pt]{\small Independent Researcher, Republic of Korea}}
+\date{25 November 2026}
+\makeatletter
+\def\@maketitle{\begin{center}{\LARGE\@title\par}\vspace{0.8em}{\large\@author\par}\vspace{0.45em}{\small\@date\par}\end{center}\vspace{0.5em}}
+\makeatother
+\begin{document}
+\maketitle
+\begin{abstract}
+A word can visit a cyclic class of permutations before all of its rotations occur. Let $M(n,k)$ be the minimum length of a word visiting all $(n-1)!$ classes on $n$ symbols and completing at least $k$ of them. Given any upper bound $U$ for the shortest superpermutation length $L(n)$, we give an explicit threshold above which $M(n,k)=L(n)-n((n-1)!-k)$. The same formula gives a decision equivalence for a proposed target length. The proof bounds the number of components left when one copy of each permutation is removed from a word. Its local ingredient is a restriction on successive runs of distinct rotation classes in intervals of $n(n-1)-1$ contexts. This extends a seven-symbol completion criterion to every $n\ge3$.
+\end{abstract}
+
+\section{The completion problem}
+Fix an alphabet of $n\ge3$ symbols, and set $m=n-1$ and $N=m!$. A word is a \emph{superpermutation} if every permutation of the alphabet occurs as a contiguous factor. Write $L(n)$ for the minimum such length. A \emph{label} is a cyclic order of the $n$ symbols, identified with the set of all $n$ rotations of a permutation. A \emph{context} consists of $m$ consecutive letters. When its letters are distinct, the context is \emph{valid} and its label is obtained by appending the unique missing symbol and taking the cyclic order. A word \emph{visits} a label if it has a context with that label. It \emph{completes} the label if it contains all $n$ rotations as length-$n$ factors. Write $M(n,k)$ for the minimum length of a word visiting every label and completing at least $k$ labels, for $0\le k\le N$.
+
+Suppose a word contains a valid context $s$, with missing letter $a$. Inserting $as$ immediately after $s$ spells one circuit through all $n$ rotations of its label and returns to $s$. The original context walk resumes there, retaining every old length-$n$ factor. Applying this to each incomplete label gives
+\begin{equation}
+  L(n)\le M(n,k)+n(N-k). \label{eq:splice}
+\end{equation}
+For $k=N$ equality is immediate. Our question is how far down the range of $k$ equality is guaranteed.
+
+\section{The threshold}
+For an integer $T\ge n!+m$, put
+\begin{gather}
+ r=T-n!-m,\qquad H=nm-1,\qquad Q=H-m,\nonumber\\
+ K(T)=\min\left\{N,\ \fl{\frac rm},\
+ \fl{\frac{Qr+Q-1-H(N-1)}{m-1}}\right\}.\label{eq:K}
+\end{gather}
+The restriction on $T$ counts the $n!$ distinct length-$n$ factors needed by a superpermutation. All floors above apply to signed rationals.
+
+\begin{theorem}\label{th:main}
+If $K(T)<0$ then $L(n)>T$. For every integer $0\le k\le N$ with $k\ge K(T)$,
+\begin{equation}
+   L(n)\le T\quad\Longleftrightarrow\quad M(n,k)\le T-n(N-k).
+   \label{eq:decision}
+\end{equation}
+For every known upper bound $U\ge L(n)$ and every $K(U)\le k\le N$,
+\begin{equation}
+   M(n,k)+n(N-k)=L(n).\label{eq:equality}
+\end{equation}
+\end{theorem}
+
+The fixed seven-symbol version of this problem gives equality for every $k\ge91$ by additional component estimates specific to that alphabet~\cite{seven}. Here the constants in~\eqref{eq:K} follow from a uniform interval bound. The shorthand encoding of permutations by $n-1$ letters also appears in the universal cycles of Holroyd, Ruskey and Williams~\cite{shorthand}. In our problem the $n$ contexts of one cyclic class contribute one visit, while completion records length-$n$ factors. Halfar's defect characterization for $n\ge5$ tests existence at a given length through configurations of permutation chains~\cite{halfar}. Our partial witnesses are words, so the reverse direction of~\eqref{eq:decision} can be realized by explicit insertions.
+
+\section{How densely can distinct classes be visited?}
+In any chosen interval of consecutive context positions, mark at most one occurrence per label. Consecutive marked positions carry different labels. When one valid context shifts to another, the appended letter must be either the removed first letter or the formerly missing letter. In the latter case both contexts have the same label. Thus a run of marks rotates its initial $m$-letter context one place at a time and has length at most $m$. In particular, an interval of $n$ positions has at most $m$ marks. A full run of $m$ marks gives all labels obtained by inserting its missing symbol into the $m$ gaps in the cyclic order of its context symbols.
+
+\begin{lemma}\label{lem:seam}
+Suppose two full runs are separated by exactly one unmarked position and their labels are all distinct. If the first run starts at $s=a_1\cdots a_m$, the second starts at $a_2\cdots a_{m-1}a_1a_m$.
+\end{lemma}
+\begin{proof}
+The last context of the first run is $a_ma_1\cdots a_{m-1}$. Two shifts later the second starts at $t=a_2\cdots a_{m-1}bc$. If the symbols missing from $s$ and $t$ differ, the two contexts share $m-1$ symbols. Their common cyclic order consists of $a_2,\ldots,a_{m-1}$ followed by the one additional common symbol from $\{a_1,a_m\}$. For $m=2$ the common order is a singleton. The cyclic orders on the two context alphabets therefore have a common extension to all $n$ symbols. Indeed, insert each exclusive symbol in its prescribed gap of the common order, choosing either relative order when the gaps coincide. This extension is a label of each full run, contradicting distinctness.
+
+The missing symbols consequently agree, and $(b,c)$ is a permutation of $(a_1,a_m)$. The choice $(a_m,a_1)$ gives $t$ the original cyclic order, again duplicating a label. The other choice gives the assertion.
+\end{proof}
+
+\begin{lemma}\label{lem:block}
+Every interval of $H=m^2+m-1$ context positions visits at most $Q=m^2-1$ labels.
+\end{lemma}
+\begin{proof}
+Mark one occurrence of every label seen. If at most $m-1$ positions are unmarked then there are at most $m$ runs, each of length at most $m$. Their total length, including unmarked positions, is at most $m^2+m-1$. Equality forces $m$ full runs with single intervening gaps. By Lemma~\ref{lem:seam}, passing from one starting context to the next rotates its first $m-1$ letters and fixes the last. The $(m-1)$ transitions return the final starting context to the first, repeating a marked label. Hence at least $m$ positions are unmarked.
+\end{proof}
+
+\section{Residual walks and component bounds}
+View a word as a walk in the directed word graph whose vertices are $m$-letter contexts. Each length-$n$ factor is an edge from its prefix to its suffix of length $m$. The $n!$ permutation edges form $N$ vertex-disjoint directed cycles of length $n$, one per label. From the walk of a superpermutation $w$ delete exactly one copy of each permutation edge. Keep the initial vertex even if it is isolated. There are $R=|w|-n!-m$ edges left, counted with multiplicity. Call the weak component containing the initial vertex $C_0$, and let $b$ count the other components bearing at least one edge. We omit other isolated vertices.
+
+The deletion preserves the net in-degree and out-degree at each vertex. If the two endpoints differ, their opposite imbalances must belong to the same weak component. The directed Euler criterion thus gives a trail in $C_0$ with the original endpoints and a circuit in each of the other $b$ components. Every noninitial component has a valid context. A path in the original undirected support from the initial vertex to that component first enters it through a deleted permutation edge. Starting its residual Euler circuit at such a context shows that its edge count is at least $m$. A return in $e$ steps with $0<e<m$ would force the first and $(e+1)$st letters of the initial context to agree. In particular $mb\le R$.
+
+For a component $C$, let $c_C$ be the number of labels at its valid vertices and put $h_C=\max(c_C-1,0)$. The incidence graph between residual components and mandatory cycles is connected. To see this, contract the pieces in the connected union of the original edges, recording shared vertices as incidences. Distinct cycles never meet, and distinct residual components never meet. Since $N\ge2$, every mandatory cycle meets a retained component, also in the case of an isolated initial vertex. The number of incidences is $\sum_C c_C$. A connected graph on $N+b+1$ vertices has at least $N+b$ edges, hence
+\begin{equation}
+ \sum_C h_C\ge N-1.\label{eq:rank}
+\end{equation}
+
+\begin{proposition}\label{prop:price}
+For the initial component of $e$ edges, $Hh_{C_0}\le Qe+Q-1$. For each other component $C$ of $e$ edges, $Hh_C\le Qe-(m-1)$. Consequently
+\begin{equation}
+ (m-1)b\le QR+Q-1-H(N-1).\label{eq:components}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Write the $e+1$ positions of the initial trail as $d$ blocks of length $H$ and a remainder of length $j<H$. The blocks visit at most $dQ$ labels. If $j=an+t$ with $0\le t\le m$, the remainder visits at most $am+t\le (m/n)j+m/n$ by the bound for $n$ positions. Since $m/n-Q/H=1/(nH)$ and $j<H$, this is strictly less than $(Q/H)j+1$. It follows that $c_{C_0}< (Q/H)(e+1)+1$. For $c_{C_0}\ge1$, integrality yields $Hh_{C_0}\le Qe+Q-1$. The same inequality holds when $c_{C_0}=0$.
+
+In a noninitial circuit, $c_C\ge1$ and $e\ge m$. If $e=m$, then $c_C\le m$ and $H(m-1)=Qm-(m-1)$. If $m<e<H$, mark one occurrence per label among the $e$ cyclic positions. Each arc of $n$ positions contains at most $m$ marks. The sum over all starting positions gives $n c_C\le me$, so
+\[
+ Hh_C\le (Hm/n)e-H=Qe+e/n-H\le Qe-(m-1).
+\]
+If $e\ge H$, count the arcs of $H$ positions in the same manner. Lemma~\ref{lem:block} gives $Hc_C\le Qe$, which suffices. In both counts an arc encounters each of its positions only once. Summing the component bounds and using~\eqref{eq:rank} proves~\eqref{eq:components}.
+\end{proof}
+
+\section{Assembling a partial witness}
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+Suppose first that $w$ is a superpermutation with $|w|\le T$. Begin with $C_0$. Until the remaining residual components have all joined the connected part, select a mandatory cycle meeting both the connected part and a new component, and include the cycle and all components it meets. Such a cycle exists by connectedness of the incidence graph. The selected $j$ cycles are distinct, and each step joins at least one of the $b$ noninitial components. Thus $j\le N$ and $j\le b$. From $mb\le R$, Proposition~\ref{prop:price} and $R\le r$, we have $j\le K(T)$. The existence of $w$ therefore forces $K(T)\ge0$.
+
+The union of all residual components and the selected cycles admits an Euler trail with the original endpoints. Every mandatory cycle meets a retained residual vertex, so the trail visits every label. It contains all edges of each selected cycle and thus completes at least $j$ labels. Its length in letters is $m+R+nj$. For $k\ge j$ we can complete at least $k$ labels by inserting at most $k-j$ further cycles. The resulting length is at most
+\[
+   m+R+nk=|w|-n(N-k).
+\]
+This proves the forward direction of~\eqref{eq:decision}. Inequality~\eqref{eq:splice} gives the reverse. For a valid upper bound $U$, choose a shortest $w$ and run the construction with $T=U$. Its length estimate gives $M(n,k)\le L(n)-n(N-k)$ for every $k\ge K(U)$, which together with~\eqref{eq:splice} proves~\eqref{eq:equality}.
+\end{proof}
+
+\section{Numerical specializations}
+Table~\ref{tab:numerical} evaluates~\eqref{eq:K}. The targets $5900$, $5904$ and $93{,}904{,}707{,}284$ illustrate the decision form, which requires no assumption of attainability. The seven-symbol word W-0021 and the fourteen-symbol word W-0166 supply the upper bounds used in the other rows at those sizes~\cite{almanac}. At $n=7$ the general lemma gives $(H,Q)=(41,35)$. The fixed-alphabet estimates of~\cite{seven} give the stronger partial target $k=91$ and length $1501$ at $T=5904$. At $n=14$, $(H,Q)=(181,168)$. To improve W-0166 by one letter is equivalent to finding a word of length at most $10{,}164{,}740{,}806$ visiting all $13!$ classes and completing at least $245{,}594{,}623$. The equivalence leaves the feasibility of this target open.
+
+\begin{table}[ht]
+\centering
+\caption{Completion thresholds and corresponding partial-word lengths.}
+\label{tab:numerical}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & Target $T$ & $K(T)$ & $T-n(N-K(T))$\\
+\midrule
+3 & $9$ & $0$ & $3$\\
+4 & $33$ & $0$ & $9$\\
+5 & $153$ & $4$ & $53$\\
+6 & $872$ & $25$ & $302$\\
+7 & $5{,}900$ & $89$ & $1{,}483$\\
+7 & $5{,}904$ & $117$ & $1{,}683$\\
+7 & $5{,}905$ & $124$ & $1{,}733$\\
+14 & $93{,}904{,}707{,}284$ & $245{,}594{,}623$ & $10{,}164{,}740{,}806$\\
+14 & $93{,}904{,}707{,}285$ & $245{,}594{,}637$ & $10{,}164{,}741{,}003$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For $n=3,4$ the threshold vanishes. Substituting the exact lengths $L(3)=9$ and $L(4)=33$~\cite{almanac} in~\eqref{eq:equality} gives the entire profiles $M(3,k)=3+3k$ and $M(4,k)=9+4k$. The supplement independently enumerates the first profile, finds shortest all-label visiting words at both sizes by breadth-first search, and constructs a matching upper witness at every $k$ for both.
+
+\paragraph{Verification and contributions.}
+The all-alphabet result has a combinatorial proof. The accompanying Python program checks the arithmetic in Table~\ref{tab:numerical} and the possible transitions in Lemma~\ref{lem:seam} for $3\le n\le20$. The Lean results described in~\cite{seven} concern seven symbols. Jaehun Jung posed the research question and directed the investigation. OpenAI Codex assisted with proof development, implementation, finite checks and manuscript preparation.
+
+\small
+\begin{thebibliography}{9}\setlength{\itemsep}{2pt}
+\bibitem{shorthand} A.~E. Holroyd, F. Ruskey and A. Williams, Shorthand universal cycles for permutations, \emph{Algorithmica} \textbf{64} (2012), 215--245. \href{https://doi.org/10.1007/s00453-011-9544-z}{Published article}.
+\bibitem{seven} J. Jung, \emph{A rotation-class completion criterion for seven-symbol superpermutations}, preprint and verification supplement (2026), revision \texttt{4a98a9a}. \href{https://github.com/aistaralchemist-cyber/superpermutation-completion-7/tree/4a98a9ae38cd6ec82c0ee0622a49419c3d98d453}{Manuscript and source}.
+\bibitem{halfar} J. Halfar, \emph{$s(7)\ge5{,}899$, proved in Lean}, with the characterization by configurations of defect $D$ for $n\ge5$ (2026). \href{https://groups.google.com/g/superpermutators/c/dmBTmhy0a1A}{Author's statement and proof links}.
+\bibitem{almanac} \emph{Superpermutation Almanac}, \href{https://superpermutations.com/}{bounds catalogue}, \href{https://superpermutations.com/w/W-0021}{W-0021} (A. Teodorescu) and \href{https://superpermutations.com/w/W-0166}{W-0166} (J. Jung), consulted 25 November 2026.
+\end{thebibliography}
+\end{document}
